@@ -1,0 +1,36 @@
+import sqlite3
+from config import *
+
+class DB_Manager:
+    def __init__(self, database):
+        self.database = database # имя базы данных
+        
+    def create_tables(self):
+        conn = sqlite3.connect(self.database)
+        with conn:
+            conn.execute(''' CREATE TABLE project(
+                         projekt_id INTERGER PRIMARY KEY
+                         iser_id INTERGER,
+                         project_name TEXT NOT NULL,
+                         discription TEXT,
+                         url TEXT,
+                         sratus_id INTEGER,
+                         FOREIGN KEY (status_id) REFERENCES (status_id))''')
+            
+            conn.execute(''' CREATE TABLE project_skills(
+                         projekt_id INTERGER,
+                         skills_id INTERGER,
+                         FOREIGN KEY (project_id) REFERENCES project (project_id))
+                         FOREIGN KEY (skills_id) REFERENCES skills (skills_id))''')
+            
+            conn.execute('''CREATE TABLE skils(
+                          skills_id INTERGER PRIMARY KEY,
+                          skills_name TEXT)''')
+            
+            conn.execute('''CREATE TABLE status(
+                          status_id INTERGER PRIMARY KEY
+                          status_name TEXT)''')
+            
+if __name__ == '__main__':
+    manager = DB_Manager(DATABASE)
+    manager.create_tables()
